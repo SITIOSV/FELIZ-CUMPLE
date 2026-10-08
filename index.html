@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feliz cumpleaños amorcito</title>
+<!-- VISTA PREVIA AL COMPARTIR EL LINK -->
+<!-- IMPORTANTE: cambiá TU-LINK.netlify.app por la dirección real donde subas la página (debe ser https y absoluta) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Feliz cumpleaños amorcito 🎂">
+<meta property="og:description" content="Hice algo con cariño para tu día. Abrilo con calma 💗">
+<meta property="og:image" content="https://TU-LINK.netlify.app/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_LA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Feliz cumpleaños amorcito 🎂">
+<meta name="twitter:image" content="https://TU-LINK.netlify.app/preview.jpg">
+<meta name="theme-color" content="#0f0c29">
+<style>
+/* ===== VARIABLES ===== */
+:root{
+  --bg1:#0f0c29;--bg2:#24243e;--rose:#ffc2d9;--lav:#cdb8ff;--vio:#8b6cf0;--gold:#ffd9a0;
+  --text:#f6f1ff;--muted:#b9b2d6;--glass:rgba(255,255,255,.07);--line:rgba(255,255,255,.16);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--text);background:linear-gradient(160deg,var(--bg1),var(--bg2) 60%,#2b1b4a);background-attachment:fixed;line-height:1.65;overflow-x:hidden;min-height:100vh}
+canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main{position:relative;z-index:1}
+section{position:relative;isolation:isolate;overflow:hidden;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:96px 22px;text-align:center}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.15}
+h1{font-size:clamp(2.6rem,9vw,5.6rem)}
+h2{font-size:clamp(1.9rem,5vw,3rem);margin-bottom:12px}
+.grad{background:linear-gradient(100deg,var(--rose),var(--lav) 55%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);max-width:520px;margin:0 auto 40px;font-size:1.05rem}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:24px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 20px 50px rgba(5,0,30,.35),inset 0 1px 0 rgba(255,255,255,.12)}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--rose),var(--vio),var(--gold));box-shadow:0 0 12px var(--rose)}
+
+/* Reveal al hacer scroll */
+.rv{opacity:0;transform:translateY(28px);filter:blur(8px);transition:opacity 1s var(--ease),transform 1s var(--ease),filter 1s var(--ease)}
+.rv.in{opacity:1;transform:none;filter:none}
+
+/* Portada */
+.hero .heart{font-size:2.4rem;display:inline-block;animation:beat 2.4s ease-in-out infinite;filter:drop-shadow(0 0 16px var(--rose));margin-bottom:22px}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.18)}24%{transform:scale(1)}36%{transform:scale(1.1)}}
+.hero p{max-width:480px;margin:24px auto 0;color:var(--muted);font-size:1.15rem}
+.caret::after{content:"";display:inline-block;width:3px;height:.85em;background:var(--rose);margin-left:6px;vertical-align:-.05em;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.scroll{position:absolute;bottom:32px;width:26px;height:44px;border:2px solid var(--line);border-radius:14px}
+.scroll::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--rose);animation:dot 1.8s var(--ease) infinite}
+@keyframes dot{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
+
+/* Tarjetas */
+.grid{display:grid;gap:18px;width:min(1000px,100%);grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{padding:30px 26px;text-align:left}
+.card h3{font-size:1.35rem;margin:10px 0 8px}
+.card p{color:var(--muted)}
+.ico{width:34px;height:34px;stroke:var(--rose);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* Línea de tiempo */
+.tl{position:relative;width:min(640px,100%);text-align:left;padding-left:44px}
+.tl::before{content:"";position:absolute;left:15px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--rose),var(--vio),transparent)}
+.ev{position:relative;padding:22px 24px;margin-bottom:22px}
+.ev .dot{position:absolute;left:-44px;top:20px;width:32px;height:32px;border-radius:50%;background:var(--bg1);border:1px solid var(--line);display:grid;place-items:center;box-shadow:0 0 18px rgba(255,194,217,.4)}
+.ev .dot svg{width:16px;height:16px;stroke:var(--rose);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ev small{color:var(--gold);font-size:.85rem}
+.ev h3{font-size:1.25rem;margin:2px 0 4px}
+.ev p{color:var(--muted)}
+
+/* Contador */
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:min(640px,100%)}
+.count div{padding:22px 6px}
+.count b{display:block;font-family:var(--serif);font-weight:500;font-size:clamp(1.8rem,7vw,3rem);font-variant-numeric:tabular-nums}
+.count span{color:var(--muted);font-size:.9rem}
+
+/* Cartas que giran */
+.flip{perspective:1000px;min-height:190px;cursor:pointer;background:none;border:0;color:inherit;font:inherit;text-align:center}
+.flip .in2{position:relative;width:100%;height:100%;min-height:190px;transition:transform .9s var(--ease);transform-style:preserve-3d}
+.flip.on .in2{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face.back{transform:rotateY(180deg);font-size:1.02rem;color:var(--text)}
+.face .hint{color:var(--muted);font-size:.8rem;margin-top:8px}
+.flip:focus-visible,.btn:focus-visible{outline:2px solid var(--lav);outline-offset:4px;border-radius:24px}
+
+
+/* Galería polaroid */
+.polas{display:grid;gap:34px 26px;width:min(1000px,100%);grid-template-columns:repeat(auto-fit,minmax(240px,1fr));padding:10px}
+.pola{position:relative;background:#fdfaf6;padding:14px 14px 40px;border-radius:4px;box-shadow:0 18px 40px rgba(5,0,30,.5);transform:rotate(var(--r));transition:transform .6s var(--ease),box-shadow .6s var(--ease);cursor:pointer;color:#3b3350}
+.pola:nth-child(odd){--r:-2.5deg}.pola:nth-child(even){--r:2deg}.pola:nth-child(3n){--r:-1deg}
+.pola:hover{transform:rotate(0) translateY(-8px) scale(1.03);box-shadow:0 26px 60px rgba(255,194,217,.3)}
+.pola .ph{position:relative;aspect-ratio:4/5;overflow:hidden;background:linear-gradient(135deg,#efe6ff,#ffe4ee);display:grid;place-items:center}
+.pola img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pola .add{font-size:.9rem;color:#8b6cf0;text-align:center;padding:10px}
+.pola .add b{display:block;font-size:2.2rem;font-weight:300;line-height:1}
+.pola .cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-family:var(--serif);font-style:italic;font-size:1.05rem}
+.pola input{display:none}
+
+/* Botones */
+.btn{position:relative;overflow:hidden;min-height:48px;padding:14px 34px;border:0;border-radius:999px;font:600 1rem var(--sans);color:#1a1236;background:linear-gradient(110deg,var(--rose),var(--lav));cursor:pointer;box-shadow:0 10px 30px rgba(205,184,255,.3);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 14px 44px rgba(255,194,217,.5)}
+.btn.ghost{background:var(--glass);color:var(--text);border:1px solid var(--line);box-shadow:none}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .7s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px;background:rgba(10,6,32,.6);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .6s var(--ease)}
+.modal.open{opacity:1;pointer-events:auto}
+.letter{display:flex;flex-direction:column;width:min(540px,100%);max-height:calc(100dvh - 40px);padding:32px 26px 22px;text-align:left;border-radius:26px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(160deg,rgba(46,34,92,.96),rgba(26,19,56,.97));box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(255,194,217,.12);transform:translateY(24px) scale(.97);transition:transform .7s var(--ease);outline:0}
+.modal.open .letter{transform:none}
+.letter h3{font-size:clamp(1.5rem,5vw,2rem);margin-bottom:14px;text-align:center}
+.lscroll{flex:1 1 auto;min-height:0;overflow-y:auto;padding-right:8px;scrollbar-width:thin;scrollbar-color:rgba(255,194,217,.4) transparent}
+.lscroll::-webkit-scrollbar{width:6px}.lscroll::-webkit-scrollbar-thumb{background:rgba(255,194,217,.35);border-radius:6px}
+#lbody p{margin-bottom:14px;color:#efe8ff;font-family:var(--serif);font-size:1.12rem;line-height:1.8}
+#lbody .rest{visibility:hidden}
+#lbody .cur{display:inline-block;width:2px;height:1.05em;margin-left:1px;vertical-align:-.15em;background:var(--rose);animation:blink 1s steps(2) infinite}
+.letter .sign{font-family:var(--serif);font-style:italic;font-size:1.2rem;color:var(--rose);margin:6px 0 8px;opacity:0;transition:opacity 1.2s}
+.letter .sign.show{opacity:1}
+.lfoot{display:flex;justify-content:center;padding-top:16px;margin-top:8px;border-top:1px solid var(--line)}
+.final-msg{min-height:1.6em;margin-top:26px;color:var(--gold);font-family:var(--serif);font-size:1.3rem}
+
+
+/* Calendario y ticket */
+.plan{width:min(520px,100%);margin-top:34px;padding:28px 22px;text-align:center}
+.plan[hidden],#out[hidden]{display:none}
+.plan h3{font-size:1.6rem;margin-bottom:16px}
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.calhead b{font-family:var(--serif);font-weight:500;font-size:1.2rem;text-transform:capitalize}
+.nav{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--text);font-size:1.4rem;cursor:pointer}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow span{color:var(--muted);font-size:.8rem;padding:6px 0}
+.days button{aspect-ratio:1;min-height:40px;border:0;border-radius:50%;background:transparent;color:var(--text);font:inherit;cursor:pointer;transition:background .3s,transform .3s var(--ease)}
+.days button:hover:not(:disabled){background:rgba(255,194,217,.2);transform:scale(1.08)}
+.days button:disabled{opacity:.25;cursor:default}
+.days button.sel{background:linear-gradient(110deg,var(--rose),var(--lav));color:#1a1236;font-weight:700;box-shadow:0 0 20px rgba(255,194,217,.5)}
+.days button.today{border:1px solid var(--rose)}
+.fields{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin:20px 0 10px;text-align:left}
+.fields label{font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.fields input{min-height:46px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);font:1rem var(--sans);color-scheme:dark}
+.fields input:focus{outline:2px solid var(--lav)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.chips button{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--glass);color:var(--text);font:.9rem var(--sans);cursor:pointer}
+.chips button:hover{border-color:var(--rose)}
+#out{margin-top:24px}
+#tk{width:100%;max-width:340px;height:auto;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.5);margin-bottom:18px}
+.note{color:var(--gold);font-size:.9rem;margin-top:12px;min-height:1.3em}
+@media (max-width:420px){.fields{grid-template-columns:1fr}}
+
+
+/* Atmósfera al bajar */
+#tint{position:fixed;inset:0;z-index:0;pointer-events:none;transition:background .6s;background:radial-gradient(70% 55% at 50% 105%,hsla(var(--hue,330),85%,72%,.2),transparent 70%),radial-gradient(50% 40% at 100% 0%,hsla(calc(var(--hue,330) + 60),80%,70%,.1),transparent 70%)}
+section+section::before{content:"";position:absolute;top:0;left:50%;width:1px;height:64px;background:linear-gradient(transparent,var(--rose))}
+.ghost{position:absolute;z-index:-1;pointer-events:none;width:clamp(190px,34vw,390px);aspect-ratio:3/4;opacity:0;transition:opacity 2.2s var(--ease);transform:translateY(var(--py,0px)) rotate(var(--rot,0deg))}
+.ghost.in{opacity:var(--o,.14)}
+.ghost img{width:100%;height:100%;object-fit:cover;display:block;filter:blur(1.5px) saturate(1.1);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 72%);mask-image:radial-gradient(ellipse at center,#000 30%,transparent 72%)}
+@media (min-width:700px){.pola:nth-child(3n+2){margin-top:46px}}
+@media (min-width:820px){
+  .tl{width:min(920px,100%);padding-left:0}
+  .tl::before{left:50%;margin-left:-1px}
+  .ev{width:calc(50% - 34px)}
+  .ev:nth-child(odd){margin-right:auto;text-align:right}
+  .ev:nth-child(odd) .dot{left:auto;right:-50px}
+  .ev:nth-child(even){margin-left:auto}
+  .ev:nth-child(even) .dot{left:-50px}
+  .ev:nth-child(odd).rv{transform:translateX(-46px)}
+  .ev:nth-child(even).rv{transform:translateX(46px)}
+  .ev:nth-child(odd).rv.in,.ev:nth-child(even).rv.in{transform:none}
+}
+
+/* Música */
+#music{position:fixed;right:16px;bottom:16px;z-index:55;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(12px);color:var(--text);font-size:1.2rem;cursor:pointer;transition:transform .4s var(--ease)}
+#music:hover{transform:scale(1.1)}
+footer{position:relative;z-index:1;text-align:center;color:var(--muted);font-size:.85rem;padding:0 20px 60px}
+
+@media (max-width:520px){.count{grid-template-columns:repeat(2,1fr)}section{padding:84px 18px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}.rv{opacity:1;transform:none;filter:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<canvas id="bg"></canvas>
+<div id="tint"></div>
+<button id="music" aria-label="Activar música ambiente" title="Música ambiente">♪</button>
+
+<main>
+  <!-- PORTADA -->
+  <section class="hero">
+    <span class="heart" aria-hidden="true">🎂</span>
+    <h1 class="grad" id="greet"></h1>
+    <p id="heroSub"></p>
+    <div class="scroll" aria-hidden="true"></div>
+  </section>
+
+  <!-- LO QUE ME GUSTA -->
+  <section>
+    <h2 class="rv grad" id="t1"></h2>
+    <p class="sub rv" id="s1"></p>
+    <div class="grid" id="likes"></div>
+  </section>
+
+  <!-- HISTORIA -->
+  <section>
+    <h2 class="rv grad" id="t2"></h2>
+    <p class="sub rv" id="s2"></p>
+    <div class="tl" id="timeline"></div>
+  </section>
+
+  <!-- CONTADOR -->
+  <section>
+    <h2 class="rv grad" id="t3"></h2>
+    <p class="sub rv" id="s3"></p>
+    <div class="count rv">
+      <div class="glass"><b id="cd">0</b><span>días</span></div>
+      <div class="glass"><b id="ch">0</b><span>horas</span></div>
+      <div class="glass"><b id="cm">0</b><span>minutos</span></div>
+      <div class="glass"><b id="cs">0</b><span>segundos</span></div>
+    </div>
+  </section>
+
+  <!-- ADMIRO -->
+  <section>
+    <h2 class="rv grad" id="t4"></h2>
+    <p class="sub rv" id="s4"></p>
+    <div class="grid" id="admire"></div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section>
+    <h2 class="rv grad" id="tg"></h2>
+    <p class="sub rv" id="sg"></p>
+    <div class="polas" id="polas"></div>
+  </section>
+
+  <!-- SORPRESA -->
+  <section>
+    <h2 class="rv grad" id="t5" style="margin-bottom:34px"></h2>
+    <div class="rv"><button class="btn" id="openLetter"></button></div>
+  </section>
+
+  <!-- CIERRE -->
+  <section>
+    <h2 class="rv grad" id="t6"></h2>
+    <p class="sub rv" id="s6"></p>
+    <div class="row rv">
+      <button class="btn" id="yes"></button>
+      <button class="btn ghost" id="maybe"></button>
+    </div>
+    <div class="final-msg" id="final" aria-live="polite"></div>
+    <div class="plan glass" id="plan" hidden>
+      <h3 class="grad">Elijamos cuándo celebrarte</h3>
+      <div class="calhead"><button class="nav" id="prev" aria-label="Mes anterior">‹</button><b id="calt"></b><button class="nav" id="next" aria-label="Mes siguiente">›</button></div>
+      <div class="dow"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span></div>
+      <div class="days" id="days"></div>
+      <div class="fields">
+        <label>Hora<input type="time" id="time" value="18:00"></label>
+        <label>Lugar<input id="place" placeholder="¿Dónde te gustaría?" maxlength="60"></label>
+      </div>
+      <div class="chips" id="chips"></div>
+      <button class="btn" id="gen">Generar mi ticket</button>
+      <div class="note" id="note" aria-live="polite"></div>
+      <div id="out" hidden>
+        <canvas id="tk" width="1080" height="1500"></canvas>
+        <div class="row"><button class="btn" id="share">Enviar a Emerson</button><button class="btn ghost" id="dl">Descargar</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer id="foot"></footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="lt">
+  <div class="letter" id="letterBox" tabindex="-1">
+    <h3 id="lt" class="grad"></h3>
+    <div class="lscroll" id="lscroll">
+      <div id="lbody"></div>
+      <p class="sign" id="lsign"></p>
+    </div>
+    <div class="lfoot"><button class="btn" id="closeLetter">Cerrar</button></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIGURACIÓN — cambiá acá nombres, fecha y textos
+   ============================================================ */
+const CONFIG = {
+  her: "Meyby",                   // Nombre de la cumpleañera
+  me: "Emerson",                  // Tu nombre
+  met: "2026-08-15T20:00:00",     // Fecha en que se conocieron (AAAA-MM-DDTHH:MM:SS)
+  heroSub: "Hoy es tu día, y quise hacerte algo con cariño. Gracias por el tiempo que hemos compartido.",
+  likes: {
+    title: "Hoy quiero celebrarte", sub: "Tres cosas que valoro de este tiempo contigo.",
+    items: [
+      { icon: "clock", h: "Compartir tiempo", p: "Contigo las horas se pasan livianas. Me gusta estar, sin apuros." },
+      { icon: "spark", h: "Conocerte cada día", p: "Cada charla me deja con ganas de saber un poquito más de vos." },
+      { icon: "chat",  h: "Nuestras conversaciones", p: "Valoro cómo hablamos: con calma, con risas y con confianza." }
+    ]
+  },
+  story: {
+    title: "Lo que hemos vivido", sub: "Todavía se está escribiendo, y eso me gusta.",
+    items: [
+      { icon: "star",  d: "El comienzo",        h: "Cuando nos conocimos",  p: "Una primera impresión que me dejó con ganas de volver a hablar." },
+      { icon: "chat",  d: "Una charla especial", h: "Hablamos de todo",      p: "Ese rato en que el tiempo dejó de importar." },
+      { icon: "coffee",d: "Una salida",          h: "Un buen momento",       p: "Nada complicado, y justo por eso fue tan lindo." },
+      { icon: "path",  d: "Lo que viene",        h: "Otro año para vos",     p: "Y ojalá muchos momentos más para compartir." }
+    ]
+  },
+  gallery: {
+    title: "Momentos que quiero guardar", sub: "Algunas fotos que me gustan mucho.",
+    // Nombres de las fotos (en la misma carpeta que index.html)
+    photos: ["Dark_Cinematic_Lightroom_with_settings.jpg", "file_00000000ade881f6a6b3c94461eea1de.png", "file_000000001ae081f9b9b12df2221ef072.png", "image3.jpg", "IMG_20260924_233720_163.jpg", "Screenshot_20260927_163950_Gallery.jpg"],
+  },
+  counter: { title: "Desde que nos conocimos", sub: "Cada minuto ha valido la pena." },
+  admire: {
+    title: "Cosas que admiro de vos", sub: "Tocá cada tarjeta.",
+    items: [
+      { f: "Tu risa",       b: "Tiene algo contagioso. Me alegra el día sin que lo intentes." },
+      { f: "Cómo escuchás", b: "Hacés que uno se sienta escuchado de verdad. Eso se nota y se agradece." },
+      { f: "Tu curiosidad", b: "Me encanta cómo preguntás y cómo ves las cosas." },
+      { f: "Tu forma de ser", b: "Genuina y tranquila. Contigo puedo ser yo sin pensarlo." }
+    ]
+  },
+  surprise: { title: "Tu carta de cumpleaños", btn: "Abrir mi carta",
+    letterTitle: "Feliz cumpleaños, Meyby",
+    letter: [
+      "Hoy quería que tuvieras un detalle mío, algo hecho con tiempo y con cariño.",
+      "Me gusta compartir tiempo contigo, conocerte un poco más cada día y valoro de verdad nuestras conversaciones: son de mis momentos favoritos de la semana.",
+      "Ojalá este nuevo año te traiga mucha alegría, calma y todo lo que deseás. Gracias por ser quien sos."
+    ] },
+  close: { phone: "", /* tu número con código de país, ej: "50370001234" (opcional) */
+    places: ["Una cena", "Café y pastel", "Un paseo", "Cine"],
+    title: "¿Me dejas celebrarte?", sub: "Una cena, un pastel o lo que se te antoje para tu día. Vos elegís cuándo y dónde.",
+    yes: "Sí, vamos a celebrar", maybe: "Lo pienso",
+    yesMsg: "¡Qué alegría! Elegí el día abajo 🎉",
+    maybeMsgs: ["Tranquila, tómate tu tiempo. Hoy es tu día, no hay prisa.", "Mientras pensás, el pastel sigue en pie 🎂", "Pensalo todo lo que quieras. La invitación no vence 😄"] },
+  foot: "Con cariño"
+};
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ICONS = {
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 17v4M17 19h4"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+  star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  coffee:'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 10h2a2 2 0 0 1 0 4h-2M8 3v3M12 3v3"/>',
+  path:'<path d="M5 20c0-6 14-4 14-10"/><circle cx="5" cy="20" r="1.5"/><circle cx="19" cy="6" r="2"/>'
+};
+const svg = n => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg>`;
+const sm = n => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg>`;
+const set = (id, v) => $(id).textContent = v;
+
+/* ============================================================
+   CONTENIDO
+   ============================================================ */
+document.title = `¡Feliz cumpleaños, ${CONFIG.her}!`;
+set("t1", CONFIG.likes.title); set("s1", CONFIG.likes.sub);
+set("t2", CONFIG.story.title); set("s2", CONFIG.story.sub);
+set("t3", CONFIG.counter.title); set("s3", CONFIG.counter.sub);
+set("t4", CONFIG.admire.title); set("s4", CONFIG.admire.sub);
+set("t5", CONFIG.surprise.title);
+set("t6", CONFIG.close.title); set("s6", CONFIG.close.sub);
+set("heroSub", CONFIG.heroSub); set("openLetter", CONFIG.surprise.btn);
+set("yes", CONFIG.close.yes); set("maybe", CONFIG.close.maybe);
+set("foot", `${CONFIG.foot} · ${CONFIG.me}`);
+
+$("likes").innerHTML = CONFIG.likes.items.map(i =>
+  `<article class="card glass rv">${svg(i.icon)}<h3>${i.h}</h3><p>${i.p}</p></article>`).join("");
+$("timeline").innerHTML = CONFIG.story.items.map(i =>
+  `<div class="ev glass rv"><span class="dot">${sm(i.icon)}</span><small>${i.d}</small><h3>${i.h}</h3><p>${i.p}</p></div>`).join("");
+$("admire").innerHTML = CONFIG.admire.items.map(i =>
+  `<button class="flip rv" aria-pressed="false"><div class="in2"><div class="face glass"><h3>${i.f}</h3><span class="hint">Tocá para ver</span></div><div class="face back glass">${i.b}</div></div></button>`).join("");
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.setAttribute("aria-pressed", b.classList.toggle("on")));
+
+/* Galería polaroid: las fotos se ajustan solas al marco (object-fit: cover) */
+set("tg", CONFIG.gallery.title); set("sg", CONFIG.gallery.sub);
+$("polas").innerHTML = CONFIG.gallery.photos.map((_, i) => {
+  const src = CONFIG.gallery.photos[i];
+  return `<figure class="pola rv" tabindex="0" role="button" aria-label="Foto ${i + 1}"><div class="ph">${src ? `<img src="${src}" alt="Foto ${i + 1}">` : `<div class="add"><b>+</b>Agregar foto</div>`}</div><input type="file" accept="image/*"></figure>`;
+}).join("");
+document.querySelectorAll(".pola").forEach(f => {
+  const inp = f.querySelector("input"), ph = f.querySelector(".ph");
+  f.onclick = e => { if (e.target !== inp) inp.click(); };
+  f.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); inp.click(); } };
+  inp.onchange = () => { const file = inp.files[0]; if (!file) return; const r = new FileReader();
+    r.onload = () => { ph.innerHTML = `<img src="${r.result}" alt="">`; }; r.readAsDataURL(file); };
+});
+
+setTimeout(() => hearts(70, true), 1600);
+/* Portada con efecto de escritura */
+(function typeGreeting(){
+  const el = $("greet"), text = `¡Feliz cumpleaños, ${CONFIG.her}!`; let i = 0;
+  if (reduce) { el.textContent = text; return; }
+  el.classList.add("caret");
+  (function tick(){ el.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(tick, 110);
+    else setTimeout(() => el.classList.remove("caret"), 1800); })();
+})();
+
+/* Aparición al hacer scroll */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .15 });
+document.querySelectorAll(".rv").forEach((el, i) => { el.style.transitionDelay = (i % 4) * 90 + "ms"; io.observe(el); });
+
+/* Fotos fantasma de fondo: aparecen suaves antes de llegar a la galería */
+const imgs = CONFIG.gallery.photos.filter(Boolean), secs = [...document.querySelectorAll("main section")], ghosts = [];
+if (imgs.length) [
+  [0, 4, "right:-6%", "top:60%", .10, 6, .04], [1, 1, "left:-5%", "top:6%", .12, -6, .06], [1, 2, "right:-6%", "top:58%", .12, 5, .05],
+  [2, 3, "right:-5%", "top:4%", .15, 6, .07], [2, 0, "left:-6%", "top:60%", .15, -5, .05], [3, 4, "left:-4%", "top:8%", .18, -6, .06],
+  [3, 5, "right:-4%", "top:52%", .18, 5, .07], [4, 2, "left:-5%", "top:4%", .22, 5, .05], [4, 1, "right:-5%", "top:55%", .22, -6, .06],
+  [7, 5, "right:-5%", "top:6%", .12, 5, .05]
+].forEach(([si, pi, x, y, o, rot, sp]) => {
+  const sec = secs[si]; if (!sec) return;
+  const el = document.createElement("div"), im = new Image();
+  el.className = "ghost"; el.style.cssText = `${x};${y};--o:${o};--rot:${rot}deg`;
+  im.alt = ""; im.src = imgs[pi % imgs.length]; im.onerror = () => el.remove(); el.appendChild(im);
+  sec.prepend(el); io.observe(el); ghosts.push({ el, sec, sp });
+});
+let ticking = false;
+function onScroll(){
+  if (ticking) return; ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false; const h = document.documentElement, vh = innerHeight;
+    h.style.setProperty("--hue", 330 - h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight) * 90);
+    if (reduce) return;
+    ghosts.forEach(g => { const r = g.sec.getBoundingClientRect(); if (r.bottom < -200 || r.top > vh + 200) return;
+      g.el.style.setProperty("--py", ((r.top + r.height / 2 - vh / 2) * -g.sp) + "px"); });
+  });
+}
+addEventListener("scroll", onScroll, { passive: true }); addEventListener("resize", onScroll); onScroll();
+
+/* Barra de progreso */
+addEventListener("scroll", () => {
+  const h = document.documentElement; $("progress").style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + "%";
+}, { passive: true });
+
+/* Contador */
+function updateCount(){
+  let d = Math.max(0, Date.now() - new Date(CONFIG.met).getTime()) / 1000;
+  $("cd").textContent = Math.floor(d / 86400);
+  $("ch").textContent = Math.floor(d % 86400 / 3600);
+  $("cm").textContent = Math.floor(d % 3600 / 60);
+  $("cs").textContent = Math.floor(d % 60);
+}
+updateCount(); setInterval(updateCount, 1000);
+
+/* Ripple en botones */
+document.querySelectorAll(".btn").forEach(b => b.addEventListener("click", e => {
+  const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), p = document.createElement("span");
+  p.className = "ripple"; p.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - r.left - s/2}px;top:${e.clientY - r.top - s/2}px`;
+  b.appendChild(p); setTimeout(() => p.remove(), 700);
+}));
+
+/* ============================================================
+   FONDO ANIMADO: estrellas, bokeh y corazones
+   ============================================================ */
+const cv = $("bg"), ctx = cv.getContext("2d");
+let W, H, parts = [], burst = [], mx = 0, my = 0, tx = 0, ty = 0, running = true;
+const mobile = innerWidth < 700;
+function resize(){ const dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+resize(); addEventListener("resize", resize);
+const rnd = (a, b) => a + Math.random() * (b - a);
+const cols = ["255,194,217", "205,184,255", "255,217,160", "255,255,255"];
+function mk(type){ return { type, x: rnd(0, W), y: type === "heart" ? H + 20 : rnd(0, H), z: rnd(.3, 1), s: type === "star" ? rnd(.6, 1.8) : type === "bokeh" ? rnd(10, 38) : rnd(8, 18), c: cols[Math.floor(rnd(0, 4))], t: rnd(0, 6.28), v: rnd(.15, .45) }; }
+const k = mobile ? .5 : 1;
+for (let i = 0; i < 90 * k; i++) parts.push(mk("star"));
+for (let i = 0; i < 14 * k; i++) parts.push(mk("bokeh"));
+for (let i = 0; i < 9 * k; i++) { const b = mk("balloon"); b.s = rnd(16, 28); b.y = rnd(0, H); parts.push(b); }
+for (let i = 0; i < 12 * k; i++) { const h = mk("heart"); h.y = rnd(0, H); parts.push(h); }
+function heart(x, y, s){ ctx.beginPath(); ctx.moveTo(x, y + s * .3); ctx.bezierCurveTo(x, y - s * .2, x - s, y - s * .2, x - s, y + s * .35); ctx.bezierCurveTo(x - s, y + s * .8, x, y + s * 1.05, x, y + s * 1.3); ctx.bezierCurveTo(x, y + s * 1.05, x + s, y + s * .8, x + s, y + s * .35); ctx.bezierCurveTo(x + s, y - s * .2, x, y - s * .2, x, y + s * .3); ctx.fill(); }
+function frame(){
+  if (!running) return;
+  ctx.clearRect(0, 0, W, H); tx += (mx - tx) * .05; ty += (my - ty) * .05;
+  for (const p of parts) {
+    p.t += .02; const ox = tx * 30 * p.z, oy = ty * 30 * p.z;
+    if (p.type === "star") { ctx.fillStyle = `rgba(${p.c},${.35 + .5 * Math.abs(Math.sin(p.t))})`; ctx.beginPath(); ctx.arc(p.x + ox, p.y + oy, p.s, 0, 6.28); ctx.fill(); }
+    else if (p.type === "bokeh") { p.y -= p.v * .3; if (p.y < -50) p.y = H + 50; const g = ctx.createRadialGradient(p.x + ox, p.y + oy, 0, p.x + ox, p.y + oy, p.s); g.addColorStop(0, `rgba(${p.c},.18)`); g.addColorStop(1, `rgba(${p.c},0)`); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x + ox, p.y + oy, p.s, 0, 6.28); ctx.fill(); }
+    else if (p.type === "balloon") { p.y -= p.v * .7; p.x += Math.sin(p.t * .6) * .35; if (p.y < -90) { p.y = H + 90; p.x = rnd(0, W); }
+      const bx = p.x + ox, by = p.y + oy; ctx.strokeStyle = "rgba(255,255,255,.2)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx, by + p.s * 1.25); ctx.quadraticCurveTo(bx + 8, by + p.s * 2.2, bx - 4, by + p.s * 3.4); ctx.stroke();
+      ctx.fillStyle = `rgba(${p.c},.4)`; ctx.beginPath(); ctx.ellipse(bx, by, p.s * .8, p.s, 0, 0, 6.28); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,.35)"; ctx.beginPath(); ctx.ellipse(bx - p.s * .3, by - p.s * .35, p.s * .15, p.s * .3, .5, 0, 6.28); ctx.fill(); }
+    else { p.y -= p.v; p.x += Math.sin(p.t) * .3; if (p.y < -30) { p.y = H + 20; p.x = rnd(0, W); } ctx.fillStyle = `rgba(${p.c},.28)`; heart(p.x + ox, p.y + oy, p.s * .5); }
+  }
+  for (let i = burst.length - 1; i >= 0; i--) { const b = burst[i]; b.x += b.vx; b.y += b.vy; b.vy += .06; b.life -= .007; if (b.life <= 0 || b.y > H + 30) { burst.splice(i, 1); continue; } ctx.fillStyle = `rgba(${b.c},${b.life})`; if (b.q) { ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.life * 9 + b.s); ctx.fillRect(-b.s / 2, -b.s / 4, b.s, b.s / 2); ctx.restore(); } else heart(b.x, b.y, b.s); }
+  requestAnimationFrame(frame);
+}
+if (!reduce) frame(); else { running = false; frame; }
+document.addEventListener("visibilitychange", () => { running = !document.hidden && !reduce; if (running) frame(); });
+addEventListener("mousemove", e => { mx = e.clientX / W - .5; my = e.clientY / H - .5; trail(e.clientX, e.clientY); });
+addEventListener("deviceorientation", e => { if (e.gamma != null) { mx = Math.max(-.5, Math.min(.5, e.gamma / 60)); my = Math.max(-.5, Math.min(.5, (e.beta - 45) / 90)); } });
+
+/* Lluvia / explosión de corazones */
+function hearts(n, fromTop){
+  if (reduce) return; if (!running) { running = true; frame(); }
+  for (let i = 0; i < n; i++) burst.push({ x: fromTop ? rnd(0, W) : W / 2 + rnd(-40, 40), y: fromTop ? rnd(-80, 0) : H * .6, vx: fromTop ? rnd(-.4, .4) : rnd(-5, 5), vy: fromTop ? rnd(1, 2.5) : rnd(-11, -3), s: rnd(5, 12), c: cols[Math.floor(rnd(0, 3))], q: Math.random() < .55, life: 1 });
+}
+
+/* Estela del cursor (solo escritorio) */
+function trail(x, y){
+  if (reduce || matchMedia("(pointer:coarse)").matches) return;
+  const d = document.createElement("i");
+  d.style.cssText = `position:fixed;left:${x}px;top:${y}px;width:8px;height:8px;margin:-4px;border-radius:50%;pointer-events:none;z-index:70;background:radial-gradient(circle,#ffc2d9,transparent 70%);transition:transform .8s,opacity .8s`;
+  document.body.appendChild(d); requestAnimationFrame(() => { d.style.transform = "scale(3)"; d.style.opacity = "0"; }); setTimeout(() => d.remove(), 800);
+}
+
+/* ============================================================
+   MODAL, CIERRE Y MÚSICA
+   ============================================================ */
+set("lt", CONFIG.surprise.letterTitle);
+set("lsign", `— ${CONFIG.me}`);
+let rain, typeTok = 0, skipType = null;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function typeLetter(){
+  const tok = ++typeTok, body = $("lbody"), sc = $("lscroll"), sign = $("lsign");
+  sign.classList.remove("show"); sc.scrollTop = 0;
+  body.innerHTML = CONFIG.surprise.letter.map(t => `<p><span class="t"></span><span class="cur"></span><span class="rest"></span></p>`).join("");
+  const ps = [...body.children]; let skip = reduce;
+  skipType = () => { skip = true; };
+  ps.forEach((p, i) => p.querySelector(".rest").textContent = CONFIG.surprise.letter[i]);
+  await sleep(reduce ? 0 : 700);
+  for (let i = 0; i < ps.length; i++) {
+    const txt = CONFIG.surprise.letter[i], t = ps[i].querySelector(".t"), cur = ps[i].querySelector(".cur"), rest = ps[i].querySelector(".rest");
+    ps.forEach((q, j) => q.querySelector(".cur").style.display = j === i ? "" : "none");
+    for (let c = 1; c <= txt.length; c++) {
+      if (tok !== typeTok) return;
+      if (skip) { t.textContent = txt; rest.textContent = ""; break; }
+      t.textContent = txt.slice(0, c); rest.textContent = txt.slice(c);
+      const r = cur.getBoundingClientRect(), b = sc.getBoundingClientRect();
+      if (r.bottom > b.bottom - 16) sc.scrollTop += r.bottom - b.bottom + 48;
+      await sleep(/[.,]/.test(txt[c - 1]) ? 260 : 26);
+    }
+    ps[i].querySelector(".cur").style.display = "none";
+    if (!skip) await sleep(350);
+  }
+  if (tok !== typeTok) return;
+  sign.classList.add("show"); sc.scrollTo({ top: sc.scrollHeight, behavior: reduce ? "auto" : "smooth" });
+}
+$("lscroll").addEventListener("click", () => skipType && skipType());
+$("openLetter").onclick = () => {
+  $("modal").classList.add("open"); document.body.style.overflow = "hidden";
+  hearts(30, true); rain = setInterval(() => hearts(4, true), 900);
+  $("letterBox").focus({ preventScroll: true }); typeLetter();
+};
+const closeM = () => { $("modal").classList.remove("open"); document.body.style.overflow = ""; clearInterval(rain); typeTok++; };
+$("closeLetter").onclick = closeM;
+$("modal").onclick = e => { if (e.target.id === "modal") closeM(); };
+addEventListener("keydown", e => { if (e.key === "Escape") closeM(); });
+
+$("yes").onclick = () => { set("final", CONFIG.close.yesMsg); showPlan(); hearts(90, false); setTimeout(() => hearts(60, true), 400); };
+let mi = 0;
+$("maybe").onclick = () => { set("final", CONFIG.close.maybeMsgs[mi++ % CONFIG.close.maybeMsgs.length]); };
+
+/* ============================================================
+   CALENDARIO + GENERADOR DE TICKET
+   ============================================================ */
+const MONTHS = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const today = new Date(); today.setHours(0, 0, 0, 0);
+let view = new Date(today.getFullYear(), today.getMonth(), 1), picked = null;
+function showPlan(){ const p = $("plan"); if (!p.hidden) return; p.hidden = false; setTimeout(() => p.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }), 500); }
+function renderCal(){
+  set("calt", `${MONTHS[view.getMonth()]} ${view.getFullYear()}`);
+  const first = (new Date(view.getFullYear(), view.getMonth(), 1).getDay() + 6) % 7;
+  const n = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+  let h = "<span></span>".repeat(first);
+  for (let d = 1; d <= n; d++) {
+    const dt = new Date(view.getFullYear(), view.getMonth(), d), past = dt < today;
+    const cls = (picked && +picked === +dt ? "sel " : "") + (+dt === +today ? "today" : "");
+    h += `<button type="button" class="${cls}" data-d="${d}" ${past ? "disabled" : ""} aria-label="${d} de ${MONTHS[view.getMonth()]}">${d}</button>`;
+  }
+  $("days").innerHTML = h;
+  $("prev").disabled = view <= new Date(today.getFullYear(), today.getMonth(), 1);
+}
+$("days").onclick = e => { const b = e.target.closest("button[data-d]"); if (!b) return; picked = new Date(view.getFullYear(), view.getMonth(), +b.dataset.d); renderCal(); };
+$("prev").onclick = () => { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); renderCal(); };
+$("next").onclick = () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); renderCal(); };
+$("chips").innerHTML = CONFIG.close.places.map(p => `<button type="button">${p}</button>`).join("");
+$("chips").onclick = e => { if (e.target.tagName === "BUTTON") $("place").value = e.target.textContent; };
+renderCal();
+
+const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+const fmtDate = () => cap(picked.toLocaleDateString("es", { weekday: "long", day: "numeric", month: "long", year: "numeric" }));
+const fmtTime = () => { const [h, m] = $("time").value.split(":").map(Number); return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "a. m." : "p. m."}`; };
+function rr(x, a, b, w, h, r){ x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+function wrap(x, t, cx, y, maxW, lh){ const ws = t.split(" "); let l = ""; const out = [];
+  ws.forEach(w => { if (x.measureText(l + w).width > maxW && l) { out.push(l.trim()); l = ""; } l += w + " "; }); out.push(l.trim());
+  out.slice(0, 2).forEach((s, i) => x.fillText(s, cx, y + i * lh)); return out.length > 1 ? lh : 0; }
+
+function drawTicket(){
+  const c = $("tk"), x = c.getContext("2d"), w = 1080, h = 1500, cx = w / 2;
+  const g = x.createLinearGradient(0, 0, w, h); g.addColorStop(0, "#0f0c29"); g.addColorStop(1, "#4a2a7a");
+  x.fillStyle = g; x.fillRect(0, 0, w, h);
+  for (let i = 0; i < 80; i++) { x.fillStyle = `rgba(255,255,255,${Math.random() * .6})`; x.beginPath(); x.arc(Math.random() * w, Math.random() * h, Math.random() * 2.2 + .4, 0, 6.28); x.fill(); }
+  x.save(); x.shadowColor = "rgba(0,0,0,.5)"; x.shadowBlur = 60; x.shadowOffsetY = 20; x.fillStyle = "#fdfaf6"; rr(x, 90, 110, 900, 1280, 48); x.fill(); x.restore();
+  x.fillStyle = g; [[90, 960], [990, 960]].forEach(([a, b]) => { x.beginPath(); x.arc(a, b, 42, 0, 6.28); x.fill(); });
+  x.strokeStyle = "#cdb8ff"; x.lineWidth = 3; x.setLineDash([12, 12]); x.beginPath(); x.moveTo(150, 960); x.lineTo(930, 960); x.stroke(); x.setLineDash([]);
+  x.textAlign = "center"; x.fillStyle = "#e88aa8"; x.font = "70px Georgia,serif"; x.fillText("♥", cx, 250);
+  x.fillStyle = "#8b6cf0"; x.font = "italic 44px Georgia,serif"; x.fillText("Celebración confirmada", cx, 320);
+  x.fillStyle = "#2f2750"; x.font = "bold 78px Georgia,serif"; x.fillText(`${CONFIG.me} & ${CONFIG.her}`, cx, 430);
+  x.strokeStyle = "#f1d3df"; x.lineWidth = 2; x.beginPath(); x.moveTo(300, 480); x.lineTo(780, 480); x.stroke();
+  const rows = [["Fecha", fmtDate()], ["Hora", fmtTime()], ["Lugar", $("place").value.trim()]]; let y = 570;
+  rows.forEach(([l, v]) => { x.fillStyle = "#9a8fb8"; x.font = "34px system-ui,sans-serif"; x.fillText(l, cx, y);
+    x.fillStyle = "#2f2750"; x.font = (l === "Lugar" ? "bold 52px" : "bold 56px") + " Georgia,serif"; x.font = x.font.replace(/^bold \d+px/, "bold " + (v.length > 28 ? 44 : 56) + "px");
+    const extra = wrap(x, v, cx, y + 70, 740, 60); y += 150 + extra; });
+  x.fillStyle = "#2f2750"; x.font = "italic 46px Georgia,serif"; x.fillText("Entrada de cumpleaños", cx, 1070);
+  x.fillStyle = "#9a8fb8"; x.font = "30px system-ui,sans-serif"; x.fillText("Válido para celebrar tu día", cx, 1125);
+  x.fillStyle = "#2f2750"; for (let i = 0, px = 270; i < 40; i++) { const bw = [3, 6, 4, 8, 2][i * 7 % 5]; x.fillRect(px, 1190, bw, 90); px += bw + 7; }
+  x.fillStyle = "#9a8fb8"; x.font = "28px system-ui,sans-serif"; x.fillText(`Nº ${String(picked.getDate()).padStart(2, "0")}${String(picked.getMonth() + 1).padStart(2, "0")}-${CONFIG.her.slice(0, 3).toUpperCase()}${CONFIG.me.slice(0, 3).toUpperCase()}`, cx, 1330);
+}
+function msg(t){ set("note", t); }
+$("gen").onclick = () => {
+  if (!picked) return msg("Elegí primero un día en el calendario.");
+  if (!$("time").value) return msg("Elegí una hora.");
+  if (!$("place").value.trim()) return msg("Escribí o elegí un lugar.");
+  msg(""); drawTicket(); $("out").hidden = false; hearts(40, false);
+  setTimeout(() => $("out").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }), 150);
+};
+const blobTk = () => new Promise(r => $("tk").toBlob(r, "image/png"));
+async function dlTk(){ const b = await blobTk(), a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "ticket-cumple.png"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+$("dl").onclick = dlTk;
+$("share").onclick = async () => {
+  const b = await blobTk(), f = new File([b], "ticket-cumple.png", { type: "image/png" });
+  const txt = `Hola ${CONFIG.me}, confirmo mi celebración de cumpleaños: ${fmtDate()}, ${fmtTime()}, en ${$("place").value.trim()} 💗`;
+  if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], text: txt }); return; } catch (e) { if (e.name === "AbortError") return; } }
+  dlTk(); msg("Se descargó tu ticket. Adjuntalo en el chat que se va a abrir.");
+  setTimeout(() => window.open(`https://wa.me/${CONFIG.close.phone}?text=${encodeURIComponent(txt)}`, "_blank"), 900);
+};
+
+/* Música ambiente (Web Audio, apagada por defecto) */
+let ac, master, on = false;
+$("music").onclick = () => {
+  if (!ac) {
+    ac = new (window.AudioContext || window.webkitAudioContext)(); master = ac.createGain(); master.gain.value = 0; master.connect(ac.destination);
+    [196, 246.94, 293.66, 392].forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(), l = ac.createOscillator(), lg = ac.createGain();
+      o.type = "sine"; o.frequency.value = f; g.gain.value = .12; l.frequency.value = .08 + i * .03; lg.gain.value = .05;
+      l.connect(lg); lg.connect(g.gain); o.connect(g); g.connect(master); o.start(); l.start(); });
+  }
+  on = !on; ac.resume();
+  master.gain.linearRampToValueAtTime(on ? .5 : 0, ac.currentTime + 1.5);
+  $("music").textContent = on ? "♫" : "♪"; $("music").setAttribute("aria-label", on ? "Pausar música" : "Activar música ambiente");
+};
+</script>
+</body>
+</html>
