@@ -173,6 +173,9 @@ section+section::before{content:"";position:absolute;top:0;left:50%;width:1px;he
 /* Música */
 #music{position:fixed;right:16px;bottom:16px;z-index:55;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(12px);color:var(--text);font-size:1.2rem;cursor:pointer;transition:transform .4s var(--ease)}
 #music:hover{transform:scale(1.1)}
+#music.on{box-shadow:0 0 22px rgba(255,194,217,.55);border-color:var(--rose)}
+#music.hint{animation:mpulse 2s ease-in-out infinite}
+@keyframes mpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,194,217,.5)}50%{box-shadow:0 0 0 12px rgba(255,194,217,0)}}
 footer{position:relative;z-index:1;text-align:center;color:var(--muted);font-size:.85rem;padding:0 20px 60px}
 
 @media (max-width:520px){.count{grid-template-columns:repeat(2,1fr)}section{padding:84px 18px}}
@@ -183,6 +186,7 @@ footer{position:relative;z-index:1;text-align:center;color:var(--muted);font-siz
 <div id="progress"></div>
 <canvas id="bg"></canvas>
 <div id="tint"></div>
+<div style="position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden" aria-hidden="true"><div id="yt"></div></div>
 <button id="music" aria-label="Activar música ambiente" title="Música ambiente">♪</button>
 
 <main>
@@ -335,6 +339,11 @@ const CONFIG = {
     yes: "Sí, vamos a celebrar", maybe: "Lo pienso",
     yesMsg: "¡Qué alegría! Elegí el día abajo 🎉",
     maybeMsgs: ["Tranquila, tómate tu tiempo. Hoy es tu día, no hay prisa.", "Mientras pensás, el pastel sigue en pie 🎂", "Pensalo todo lo que quieras. La invitación no vence 😄"] },
+  music: {
+    youtube: "https://www.youtube.com/watch?v=cE6wxDqdOV0",   // Pegá aquí el link de YouTube de la canción (o solo el ID). Ej: "https://youtu.be/XXXXXXXXXXX"
+    start: 32,     // Segundo en el que empieza la canción
+    volume: 70     // Volumen de 0 a 100
+  },
   foot: "Con cariño"
 };
 
@@ -628,19 +637,47 @@ $("share").onclick = async () => {
   setTimeout(() => window.open(`https://wa.me/${CONFIG.close.phone}?text=${encodeURIComponent(txt)}`, "_blank"), 900);
 };
 
-/* Música ambiente (Web Audio, apagada por defecto) */
-let ac, master, on = false;
-$("music").onclick = () => {
+/* ============================================================
+   MÚSICA: YouTube (si hay link en CONFIG.music.youtube) o sonido ambiente
+   ============================================================ */
+const ytId = u => { u = (u || "").trim(); const m = u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/); return m ? m[1] : (/^[\w-]{11}$/.test(u) ? u : ""); };
+const VID = ytId(CONFIG.music.youtube);
+let yt, ytReady = false, ytWanted = false, isOn = false, ac, master;
+function setBtn(on){ isOn = on; const b = $("music"); b.textContent = on ? "♫" : "♪"; b.classList.toggle("on", on); b.setAttribute("aria-label", on ? "Pausar música" : "Activar música"); }
+function loadYT(){
+  if (!VID || yt || window.YT && window.YT.Player && yt) return;
+  window.onYouTubeIframeAPIReady = () => {
+    yt = new YT.Player("yt", { width: "1", height: "1", videoId: VID,
+      playerVars: { controls: 0, disablekb: 1, playsinline: 1, loop: 1, playlist: VID, start: CONFIG.music.start || 0, rel: 0, modestbranding: 1 },
+      events: {
+        onReady: () => { ytReady = true; yt.setVolume(CONFIG.music.volume || 70); if (ytWanted) yt.playVideo(); },
+        onStateChange: e => { if (e.data === 1) setBtn(true); if (e.data === 2 && !ytWanted) setBtn(false); },
+        onError: () => { ytWanted = false; setBtn(false); }
+      } });
+  };
+  const t = document.createElement("script"); t.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(t);
+}
+function ambient(on){
   if (!ac) {
     ac = new (window.AudioContext || window.webkitAudioContext)(); master = ac.createGain(); master.gain.value = 0; master.connect(ac.destination);
     [196, 246.94, 293.66, 392].forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(), l = ac.createOscillator(), lg = ac.createGain();
       o.type = "sine"; o.frequency.value = f; g.gain.value = .12; l.frequency.value = .08 + i * .03; lg.gain.value = .05;
       l.connect(lg); lg.connect(g.gain); o.connect(g); g.connect(master); o.start(); l.start(); });
   }
-  on = !on; ac.resume();
-  master.gain.linearRampToValueAtTime(on ? .5 : 0, ac.currentTime + 1.5);
-  $("music").textContent = on ? "♫" : "♪"; $("music").setAttribute("aria-label", on ? "Pausar música" : "Activar música ambiente");
-};
+  ac.resume(); master.gain.linearRampToValueAtTime(on ? .5 : 0, ac.currentTime + 1.5);
+}
+function musicPlay(){ setBtn(true); if (VID) { ytWanted = true; loadYT(); if (ytReady) yt.playVideo(); } else ambient(true); }
+function musicPause(){ setBtn(false); if (VID) { ytWanted = false; if (ytReady) yt.pauseVideo(); } else ambient(false); }
+$("music").onclick = () => { $("music").classList.remove("hint"); isOn ? musicPause() : musicPlay(); };
+loadYT();
+$("music").classList.add("hint");
+/* Inicio automático: los navegadores exigen un primer toque; apenas ella toca la página, empieza */
+let autoStart = true;
+["pointerdown", "keydown", "touchend"].forEach(ev => addEventListener(ev, e => {
+  if (!autoStart) return; autoStart = false;
+  if (e.target.closest && e.target.closest("#music")) return;
+  $("music").classList.remove("hint"); if (!isOn) musicPlay();
+}, { passive: true }));
 </script>
 </body>
 </html>
